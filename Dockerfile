@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-ARG BASE=ubuntu:20.04
+ARG BASE=ubuntu:22.04
 
 # build is based on https://coder.com/docs/code-server/latest/CONTRIBUTING
 FROM node:16.20.1-bookworm as build
