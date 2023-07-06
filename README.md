@@ -1,6 +1,6 @@
 # ca-code-server
 
-Builds a vanilla code-server image with the exceptoin of setting the app name fields to `cloud-academy-labs`
+Builds a vanilla code-server image with the exceptoin of setting the app name fields to `ca-code-labs`
 
 ## Built-In Proxy
 
