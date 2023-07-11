@@ -1,6 +1,6 @@
 # ca-code-server
 
-Builds a vanilla code-server image with the exception of setting the app name fields to `cloud-academy-labs`
+Builds a vanilla code-server image with the exceptions of setting the app name fields to `ca-code-labs` and disabling the insecure http notification patch
 
 ## Built-In Proxy
 
