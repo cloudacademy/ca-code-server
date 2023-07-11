@@ -17,6 +17,7 @@ RUN echo "CODE_SERVER_VERSION = ${CODE_SERVER_VERSION}"
 RUN git clone --branch "v${CODE_SERVER_VERSION}" https://github.com/coder/code-server.git . && \
     git submodule update --init
 RUN sed -i 's/code-server"/ca-code-labs"/g' ci/build/build-vscode.sh
+RUN rm -f patches/insecure-notification.diff
 RUN jq ".version = \"${CODE_SERVER_VERSION}-calabs\"" package.json > /tmp/package.json && mv /tmp/package.json package.json && \
     jq ".codeServerVersion = \"${CODE_SERVER_VERSION}-calabs\"" lib/vscode/product.json > /tmp/product.json && mv /tmp/product.json lib/vscode/product.json && \
     chmod 644 lib/vscode/product.json
