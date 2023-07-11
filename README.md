@@ -1,10 +1,10 @@
 # ca-code-server
 
-Builds a vanilla code-server image with the exceptoin of setting the app name fields to `ca-code-labs`
+Builds a vanilla code-server image with the exception of setting the app name fields to `cloud-academy-labs`
 
 ## Built-In Proxy
 
-code-server has a built in proxy allowing you to access different ports within the container at the path:
+code-server has a built-in proxy allowing you to access different ports within the container at the path:
 
 ```
 /proxy/{port}
