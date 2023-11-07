@@ -24,6 +24,7 @@ RUN quilt push -a
 # remove insecure notification check without impacting other patches (look at https://github.com/coder/code-server/blob/main/patches/insecure-notification.diff for what to remove)
 RUN sed -i '/if (!window.isSecureContext)/,+24d' lib/vscode/src/vs/workbench/browser/client.ts
 RUN yarn install --frozen-lockfile
+RUN yarn add ternary-stream # address 1.83.1 build issue https://github.com/cloudacademy/ca-code-server/actions/runs/6778516221/job/18424106568
 RUN yarn build
 RUN VERSION=${VS_CODE_VERSION} yarn build:vscode
 RUN yarn release
