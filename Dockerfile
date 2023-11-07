@@ -2,15 +2,15 @@
 ARG BASE=ubuntu:22.04
 
 # build is based on https://coder.com/docs/code-server/latest/CONTRIBUTING
-FROM node:16.20.1-bookworm as build
+FROM node:18.18.2-bookworm as build
 
-ARG CODE_SERVER_VERSION=4.14.1
-ARG VS_CODE_VERSION=1.79.2
+ARG CODE_SERVER_VERSION=4.18.0
+ARG VS_CODE_VERSION=1.83.1
 
 RUN echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | tee /etc/apt/sources.list.d/goreleaser.list
 RUN apt-get update --allow-insecure-repositories
 RUN apt-get install --allow-unauthenticated -y git-lfs yarn nfpm jq gnupg quilt rsync unzip bats \
-                       build-essential g++ libx11-dev libxkbfile-dev libsecret-1-dev python-is-python3
+                       build-essential g++ libx11-dev libxkbfile-dev libsecret-1-dev libkrb5-dev python-is-python3
 
 WORKDIR /code-server
 RUN echo "CODE_SERVER_VERSION = ${CODE_SERVER_VERSION}"
@@ -21,7 +21,7 @@ RUN jq ".version = \"${CODE_SERVER_VERSION}-calabs\"" package.json > /tmp/packag
     jq ".codeServerVersion = \"${CODE_SERVER_VERSION}-calabs\"" lib/vscode/product.json > /tmp/product.json && mv /tmp/product.json lib/vscode/product.json && \
     chmod 644 lib/vscode/product.json
 RUN quilt push -a
-# remove insecure notification check without impacting other patches (look at patches insecureNotification.patch for what to remove)
+# remove insecure notification check without impacting other patches (look at https://github.com/coder/code-server/blob/main/patches/insecure-notification.diff for what to remove)
 RUN sed -i '/if (!window.isSecureContext)/,+24d' lib/vscode/src/vs/workbench/browser/client.ts
 RUN yarn install --frozen-lockfile
 RUN yarn build
