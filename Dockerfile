@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:experimental
-ARG BASE=ubuntu:22.04
+ARG BASE=ubuntu:24.04
 
 # build is based on https://coder.com/docs/code-server/latest/CONTRIBUTING
-FROM node:18.18.2-bookworm as build
+FROM node:20.17-bookworm as build
 
-ARG CODE_SERVER_VERSION=4.18.0
-ARG VS_CODE_VERSION=1.83.1
+ARG CODE_SERVER_VERSION=4.93.1
+ARG VS_CODE_VERSION=1.93.1
 
 RUN echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | tee /etc/apt/sources.list.d/goreleaser.list
 RUN apt-get update --allow-insecure-repositories
