@@ -2,14 +2,14 @@
 ARG BASE=ubuntu:24.04
 
 # build is based on https://coder.com/docs/code-server/latest/CONTRIBUTING
-FROM node:20.17-bookworm as build
+FROM node:22-bookworm as build
 
-ARG CODE_SERVER_VERSION=4.93.1
-ARG VS_CODE_VERSION=1.93.1
+ARG CODE_SERVER_VERSION=4.101.1
+ARG VS_CODE_VERSION=1.101.1
 
 RUN echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | tee /etc/apt/sources.list.d/goreleaser.list
 RUN apt-get update --allow-insecure-repositories
-RUN apt-get install --allow-unauthenticated -y git-lfs yarn nfpm jq gnupg quilt rsync unzip bats \
+RUN apt-get install --allow-unauthenticated -y git-lfs nfpm jq gnupg quilt rsync unzip bats \
                        build-essential g++ libx11-dev libxkbfile-dev libsecret-1-dev libkrb5-dev python-is-python3
 
 WORKDIR /code-server
@@ -23,13 +23,12 @@ RUN jq ".version = \"${CODE_SERVER_VERSION}-calabs\"" package.json > /tmp/packag
 RUN quilt push -a
 # remove insecure notification check without impacting other patches (look at https://github.com/coder/code-server/blob/main/patches/insecure-notification.diff for what to remove)
 RUN sed -i '/if (!window.isSecureContext)/,+24d' lib/vscode/src/vs/workbench/browser/client.ts
-RUN yarn install --frozen-lockfile
-RUN yarn add ternary-stream # address 1.83.1 build issue https://github.com/cloudacademy/ca-code-server/actions/runs/6778516221/job/18424106568
-RUN yarn build
-RUN VERSION=${VS_CODE_VERSION} yarn build:vscode
-RUN yarn release
-RUN yarn release:standalone
-RUN VERSION=${VS_CODE_VERSION} yarn package
+RUN npm install
+RUN npm run build
+RUN VERSION=${VS_CODE_VERSION} npm run build:vscode
+RUN npm run release
+RUN npm run release:standalone
+RUN VERSION=${VS_CODE_VERSION} npm run package
 
 
 # release is based on https://github.com/coder/code-server/blob/70aa1b77226ea40e5d661103de7b354f742a76df/ci/release-image/Dockerfile
