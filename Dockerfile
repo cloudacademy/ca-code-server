@@ -4,8 +4,8 @@ ARG BASE=ubuntu:24.04
 # build is based on https://coder.com/docs/code-server/latest/CONTRIBUTING
 FROM node:22-bookworm as build
 
-ARG CODE_SERVER_VERSION=4.101.1
-ARG VS_CODE_VERSION=1.101.1
+ARG CODE_SERVER_VERSION=4.108.1
+ARG VS_CODE_VERSION=1.108.1
 
 RUN echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | tee /etc/apt/sources.list.d/goreleaser.list
 RUN apt-get update --allow-insecure-repositories
