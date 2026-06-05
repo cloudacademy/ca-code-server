@@ -16,7 +16,8 @@ WORKDIR /code-server
 RUN echo "CODE_SERVER_VERSION = ${CODE_SERVER_VERSION}"
 RUN git clone --branch "v${CODE_SERVER_VERSION}" https://github.com/coder/code-server.git . && \
     git submodule update --init
-RUN sed -i 's/code-server"/ca-code-labs"/g' ci/build/build-vscode.sh
+RUN sed -i 's/code-server"/ca-code-labs"/g' ci/build/build-vscode.sh && \
+    sed -i 's|remote-cli/code-server|remote-cli/ca-code-labs|g' ci/build/build-vscode.sh
 RUN jq ".version = \"${CODE_SERVER_VERSION}-calabs\"" package.json > /tmp/package.json && mv /tmp/package.json package.json && \
     jq ".codeServerVersion = \"${CODE_SERVER_VERSION}-calabs\"" lib/vscode/product.json > /tmp/product.json && mv /tmp/product.json lib/vscode/product.json && \
     chmod 644 lib/vscode/product.json
@@ -26,8 +27,7 @@ RUN sed -i '/if (!window.isSecureContext)/,+24d' lib/vscode/src/vs/workbench/bro
 RUN npm install
 RUN npm run build
 RUN VERSION=${VS_CODE_VERSION} npm run build:vscode
-RUN npm run release
-RUN npm run release:standalone
+RUN KEEP_MODULES=1 npm run release
 RUN VERSION=${VS_CODE_VERSION} npm run package
 
 
